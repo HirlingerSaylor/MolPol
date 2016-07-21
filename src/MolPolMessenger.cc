@@ -100,13 +100,21 @@ MolPolMessenger::MolPolMessenger(){
     fEmaxCmd->SetGuidance("Set Energy range maximum");
     fEmaxCmd->SetParameterName("emax", false);
 //
-		fthetaMinCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/thetamin", this);
+    fthetaMinCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/thetamin", this);
     fthetaMinCmd->SetGuidance("Set theta range minimum");
     fthetaMinCmd->SetParameterName("thetamin", false);
 
     fthetaMaxCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/thetamax", this);
     fthetaMaxCmd->SetGuidance("Set theta range maximum");
     fthetaMaxCmd->SetParameterName("thetamax", false);
+
+    fphiMinCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/phimin", this);
+    fphiMinCmd->SetGuidance("Set phi range minimum");
+    fphiMinCmd->SetParameterName("phimin", false);
+ 
+    fphiMaxCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/phimax", this);
+    fphiMaxCmd->SetGuidance("Set phi range maximum");
+    fphiMaxCmd->SetParameterName("phimax", false);
 
 
 //    fThetaCmd = new G4UIcmdWithADoubleAndUnit("/MolPol/theta", this);
@@ -212,6 +220,14 @@ void MolPolMessenger::SetNewValue(G4UIcommand* cmd, G4String newValue){
     if( cmd == fthetaMaxCmd ){
 	G4double x = fthetaMaxCmd->GetNewDoubleValue(newValue);
 	fprigen->fthetaMax = x;
+    }
+    if( cmd == fphiMinCmd ){
+	G4double x = fphiMinCmd->GetNewDoubleValue(newValue);
+	fprigen->fphiMin = x;
+    }
+    if( cmd == fphiMaxCmd ){
+	G4double x = fphiMaxCmd->GetNewDoubleValue(newValue);
+	fprigen->fphiMax = x;
     }
 // INSERT new commands for theta
 

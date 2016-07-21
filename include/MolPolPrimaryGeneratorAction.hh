@@ -34,6 +34,7 @@ public:
   G4double fZ;
   G4double fEmin, fEmax;
   G4double fthetaMin, fthetaMax;
+  G4double fphiMin, fphiMax;
   void SourceModeSet(G4int );
 private:
 

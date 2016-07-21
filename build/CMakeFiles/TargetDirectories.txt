@@ -1,2 +1,0 @@
-/home/Nickie/JLab/HallA/MolPol/build/CMakeFiles/MOLPOL.dir
-/home/Nickie/JLab/HallA/MolPol/build/CMakeFiles/MolPol.dir

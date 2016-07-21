@@ -4,7 +4,7 @@
 #
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(MOLPOL)
-
+enable_language (Fortran)
 
 #ROOT path
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
@@ -51,7 +51,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIR} ${CMAKE_CU
 # Locate sources and headers for this project
 # NB: headers are included so they will show up in IDEs
 #
-file(GLOB sources ${PROJECT_SOURCE_DIR}/src/MolPol*.cc)
+file(GLOB sources ${PROJECT_SOURCE_DIR}/src/MolPol*.cc ${PROJECT_SOURCE_DIR}/src/*.f)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
 #----------------------------------------------------------------------------
@@ -72,7 +72,6 @@ target_link_libraries(MolPol ${Geant4_LIBRARIES} ${ROOT_LIBRARIES})
 #FILE( GLOB MOLPOL_GEO "geometry/*" )
 
 set(MOLPOL_SCRIPTS
-    primaryDistribution.root
     macros/vis.mac
     vis/OIX.mac
     vis/Qt.mac

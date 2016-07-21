@@ -24,14 +24,28 @@ MolPolPrimaryGeneratorAction::MolPolPrimaryGeneratorAction()
 
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4String particleName;
-  G4ParticleDefinition* particle
-    = particleTable->FindParticle(particleName="e-");
+  G4ParticleDefinition* particle = particleTable->FindParticle(particleName="e-");
   particleGun->SetParticleDefinition(particle);
   angle = 0;
-  particleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-  particleGun->SetParticleEnergy(105.*MeV);
+  //particleGun->SetParticleMomentumDirection(G4ThreeVector(0.0, 0.0, 1.0));
+  particleGun->SetParticleEnergy(1.063*GeV);
   //G4double position = -0.5*(Detector->GetWorldSizeX());
-  particleGun->SetParticlePosition(G4ThreeVector(0*cm,0.*cm,0.*cm));
+  
+  //particleGun->SetParticlePosition(G4ThreeVector(.1*cm,.1*cm,0.*cm));
+
+  fXmin = -5.0*mm;
+  fXmax =  5.0*mm;
+
+  fYmin = -5.*mm;
+  fYmax =  5.*mm;
+
+  fthetaMin = 0.0*deg;
+  fthetaMax = 10.0*deg;  
+
+  fphiMin = 0.0*deg;
+  fphiMax = 360.0*deg;  
+
+  fZ = 0.0;
 
 }
 
@@ -41,12 +55,26 @@ MolPolPrimaryGeneratorAction::~MolPolPrimaryGeneratorAction()
   delete gunMessenger;
 }
 void MolPolPrimaryGeneratorAction::rand(){ 
-  //G4ThreeVector pos = Simulation::getInstance()->detector->randPos();
-  //particleGun->SetParticlePosition(pos);
 }
 void MolPolPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-  particleGun->GeneratePrimaryVertex(anEvent);
+  //particleGun->SetParticlePosition(G4ThreeVector(.1*cm,.1*cm,0.*cm));
+  //particleGun->SetParticleMomentumDirection(G4ThreeVector(0.0, 0.0, 1.0));
+  //G4ThreeVector pos = Simulation::getInstance()->detector->randPos();
+
+  double xPos     = CLHEP::RandFlat::shoot( fXmin, fXmax );
+  double yPos     = CLHEP::RandFlat::shoot( fYmin, fYmax );
+  double thetaPos = CLHEP::RandFlat::shoot( fthetaMin, fthetaMax );
+  double phiPos   = CLHEP::RandFlat::shoot( fphiMin, fphiMax );
+  
+  //particleGun->SetParticlePosition(pos);
+  
+  particleGun->SetParticlePosition( G4ThreeVector(xPos, yPos, fZ) );
+  particleGun->SetParticleMomentumDirection( G4ThreeVector( cos( phiPos ) * sin( thetaPos ),
+							    sin( phiPos ) * sin( thetaPos ),
+							    cos( thetaPos ) ) );
+
+  particleGun->GeneratePrimaryVertex(anEvent);  
 }
 
 void MolPolPrimaryGeneratorAction::SourceModeSet(G4int i) {
