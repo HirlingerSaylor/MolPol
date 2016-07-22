@@ -62,6 +62,8 @@ class MolPolIO {
 	Double_t fEvPart_Px;
 	Double_t fEvPart_Py;
 	Double_t fEvPart_Pz;
+	Double_t fEvPart_Th;
+	Double_t fEvPart_Ph;
 	Int_t fEvPart_PID;
 
 

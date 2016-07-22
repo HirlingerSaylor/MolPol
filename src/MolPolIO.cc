@@ -59,6 +59,8 @@ void MolPolIO::InitializeTree(){
     fTree->Branch("ev.px",    &fEvPart_Px,  "ev.px/D");
     fTree->Branch("ev.py",    &fEvPart_Py,  "ev.py/D");
     fTree->Branch("ev.pz",    &fEvPart_Pz,  "ev.pz/D");
+    fTree->Branch("ev.th",    &fEvPart_Th,  "ev.th/D");
+    fTree->Branch("ev.ph",    &fEvPart_Ph,  "ev.ph/D");
 
 
     // DetectorHit
@@ -153,7 +155,10 @@ void MolPolIO::SetEventData(MolPolEvent *ev){
     fEvPart_Py = ev->fPartMom[0].y()/__E_UNIT;
     fEvPart_Pz = ev->fPartMom[0].z()/__E_UNIT;
 
-    fEvPart_P = ev->fPartMom[0].mag()/__E_UNIT;
+    fEvPart_P = sqrt( fEvPart_Px * fEvPart_Px + fEvPart_Py * fEvPart_Py + fEvPart_Pz * fEvPart_Pz);
+
+    fEvPart_Th = acos ( fEvPart_Pz / fEvPart_P );
+    fEvPart_Ph = atan2( fEvPart_Py, fEvPart_Px );
 
     return;
 }

@@ -21,7 +21,7 @@ void MolPolSteppingAction::UserSteppingAction(const G4Step *aStep) {
   //G4cout << "test" << G4endl;
   
   G4String strPhysVolName = aTrack->GetVolume()->GetName();
-
+  /*
   std::size_t foundVB = strPhysVolName.find("virtualBoundaryPhys_q1en");
   if( foundVB != G4String::npos ){
     G4cout << strPhysVolName << G4endl;
@@ -37,7 +37,7 @@ void MolPolSteppingAction::UserSteppingAction(const G4Step *aStep) {
     G4cout << strPhysVolName << G4endl;
     G4cout << "something is very wrong in MolPolSteppingAction" << G4endl;
   }
-
+  */
   if( aTrack->GetParentID() > 0 )
     {
       aTrack->SetTrackStatus(fStopAndKill);

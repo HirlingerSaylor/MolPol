@@ -9,8 +9,8 @@ MolPolDetector::MolPolDetector( G4String name, G4int detnum ) : G4VSensitiveDete
 
     fHCID = -1;
 
-//    fTrackSecondaries = false;
-    fTrackSecondaries = true;
+    fTrackSecondaries = false;
+    //    fTrackSecondaries = true;
 
     sprintf(colname, "genhit_%s_%d", name.data(), detnum);
     collectionName.insert(G4String(colname));

@@ -370,12 +370,70 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   // // // // // // // // Virtual Boundary // // // // // // // //
 
   G4VSolid*        VBSolid   = new G4Tubs("VBSolid",0,pQ1Rout *5., 0.00001 * mm ,0.0,360.0*deg);
-  G4LogicalVolume* VBLogical = new G4LogicalVolume(VBSolid, Vacuum, "VBLogical",0,0,0);
-  VBLogical->SetVisAttributes(VacVisAtt);
+  G4LogicalVolume* Q1ENLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q1ENLogical",0,0,0);
+  G4LogicalVolume* Q1EXLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q1EXLogical",0,0,0);
+  G4LogicalVolume* Q2ENLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q2ENLogical",0,0,0);
+  G4LogicalVolume* Q2EXLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q2EXLogical",0,0,0);
+  G4LogicalVolume* Q3ENLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q3ENLogical",0,0,0);
+  G4LogicalVolume* Q3EXLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q3EXLogical",0,0,0);
+  G4LogicalVolume* Q4ENLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q4ENLogical",0,0,0);
+  G4LogicalVolume* Q4EXLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q4EXLogical",0,0,0);
+  Q1ENLogical->SetVisAttributes(VacVisAtt);
+  Q1EXLogical->SetVisAttributes(VacVisAtt);
+  Q2ENLogical->SetVisAttributes(VacVisAtt);
+  Q2EXLogical->SetVisAttributes(VacVisAtt);
+  Q3ENLogical->SetVisAttributes(VacVisAtt);
+  Q3EXLogical->SetVisAttributes(VacVisAtt);
+  Q4ENLogical->SetVisAttributes(VacVisAtt);
+  Q4EXLogical->SetVisAttributes(VacVisAtt);
+
+  MolPolDetector* Q1ENSD = new MolPolDetector("q1en", 1);
+  MolPolDetector* Q1EXSD = new MolPolDetector("q1ex", 2);
+  MolPolDetector* Q2ENSD = new MolPolDetector("q2en", 3);
+  MolPolDetector* Q2EXSD = new MolPolDetector("q2ex", 4);
+  MolPolDetector* Q3ENSD = new MolPolDetector("q3en", 5);
+  MolPolDetector* Q3EXSD = new MolPolDetector("q3ex", 6);
+  MolPolDetector* Q4ENSD = new MolPolDetector("q4en", 7);
+  MolPolDetector* Q4EXSD = new MolPolDetector("q4ex", 8);
+
+  G4SDManager* SDman = G4SDManager::GetSDMpointer();
+
+  SDman->AddNewDetector(Q1ENSD);
+  SDman->AddNewDetector(Q1EXSD);
+  SDman->AddNewDetector(Q2ENSD);
+  SDman->AddNewDetector(Q2EXSD);
+  SDman->AddNewDetector(Q3ENSD);
+  SDman->AddNewDetector(Q3EXSD);
+  SDman->AddNewDetector(Q4ENSD);
+  SDman->AddNewDetector(Q4EXSD);
+
+  Q1ENLogical->SetSensitiveDetector(Q1ENSD);
+  Q1EXLogical->SetSensitiveDetector(Q1EXSD);
+  Q2ENLogical->SetSensitiveDetector(Q2ENSD);
+  Q2EXLogical->SetSensitiveDetector(Q2EXSD);
+  Q3ENLogical->SetSensitiveDetector(Q3ENSD);
+  Q3EXLogical->SetSensitiveDetector(Q3EXSD);
+  Q4ENLogical->SetSensitiveDetector(Q4ENSD);
+  Q4EXLogical->SetSensitiveDetector(Q4EXSD);
+
   new G4PVPlacement(0,G4ThreeVector(0,0,pQ1Pos_Z - pQ1HL ),
-		    VBLogical,"virtualBoundaryPhys_q1en",world_log,0,0,0);
+		    Q1ENLogical,"virtualBoundaryPhys_q1en",world_log,0,0,0);
   new G4PVPlacement(0,G4ThreeVector(0,0,pQ1Pos_Z + pQ1HL ),
-		    VBLogical,"virtualBoundaryPhys_q1ex",world_log,0,0,0);
+		    Q1EXLogical,"virtualBoundaryPhys_q1ex",world_log,0,0,0);
+  new G4PVPlacement(0,G4ThreeVector(0,0,pQ2Pos_Z - pQ2HL ),
+		    Q2ENLogical,"virtualBoundaryPhys_q2en",world_log,0,0,0);
+  new G4PVPlacement(0,G4ThreeVector(0,0,pQ2Pos_Z + pQ2HL ),
+		    Q2EXLogical,"virtualBoundaryPhys_q2ex",world_log,0,0,0);
+  new G4PVPlacement(0,G4ThreeVector(0,0,pQ3Pos_Z - pQ3HL ),
+		    Q3ENLogical,"virtualBoundaryPhys_q3en",world_log,0,0,0);
+  new G4PVPlacement(0,G4ThreeVector(0,0,pQ3Pos_Z + pQ3HL ),
+		    Q3EXLogical,"virtualBoundaryPhys_q3ex",world_log,0,0,0);
+  new G4PVPlacement(0,G4ThreeVector(0,0,pQ4Pos_Z - pQ4HL ),
+		    Q4ENLogical,"virtualBoundaryPhys_q4en",world_log,0,0,0);
+  new G4PVPlacement(0,G4ThreeVector(0,0,pQ4Pos_Z + pQ4HL ),
+		    Q4EXLogical,"virtualBoundaryPhys_q4ex",world_log,0,0,0);
+
+
 
   // // // // // // // // DETECTOR AND BOX // // // // // // // //
 

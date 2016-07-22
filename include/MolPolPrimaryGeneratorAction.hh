@@ -37,7 +37,7 @@ public:
   G4double fphiMin, fphiMax;
   void SourceModeSet(G4int );
 private:
-
+  MolPolEvent* fDefaultEvent;
   G4ParticleGun*           particleGun; //pointer a to G4  class
   MolPolIO *fIO;    
   PrimaryGeneratorMessenger* gunMessenger;   //messenger of this class
