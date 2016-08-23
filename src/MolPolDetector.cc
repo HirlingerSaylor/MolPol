@@ -72,6 +72,9 @@ G4bool MolPolDetector::ProcessHits( G4Step *step, G4TouchableHistory *){
 	thishit->fGen   = (long int) track->GetCreatorProcess();
     }
 
+    if( fDetNo == 9 )
+      track->SetTrackStatus(fStopAndKill);
+
     return !badedep && !badhit;
 }
 

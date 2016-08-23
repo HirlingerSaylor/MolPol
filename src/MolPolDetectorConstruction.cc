@@ -66,13 +66,16 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4Element* O  = new G4Element("Oxygen"  , "O", z=8 , a=16.00*g/mole);
 
 
+  G4Element* Al = new G4Element("Aluminum", "Al", z=13, a=26.98*g/mole);
   G4Element* Fe = new G4Element("Iron"   , "Fe", z=26, a=55.845*g/mole);
   G4Element* Si = new G4Element("Silicon", "Si", z=14, a=28.09 *g/mole);
   density = 7.65 *g/cm3;
   G4Material* siliconsteel = new G4Material("SiliconSteel", density, nelements=2);
   siliconsteel->AddElement(Fe, natoms=11);
   siliconsteel->AddElement(Si, natoms=1);
-
+  density = 2.70 *g/cm3;
+  G4Material* aluminum = new G4Material("aluminum", density, nelements=1);
+  aluminum->AddElement(Al, natoms=1);
 
   //G4Element* Vac= new G4Element("Vacuum"  , "Vac", z=0 , a=06.00*g/mole);
 
@@ -241,16 +244,17 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 												   pDMFRPos_Y + pDMBHPos_Y + pDMS1Pos_Y + pDBV1Pos_Y,
 												   pDMFRPos_Z + pDMBHPos_Z + pDMS1Pos_Z + pDBV1Pos_Z) );
   
-  G4LogicalVolume* sub4Logical = new G4LogicalVolume ( sub4, Air, "sub4Logical", 0, 0, 0);
+  G4LogicalVolume* sub4Logical = new G4LogicalVolume ( sub4, siliconsteel, "sub4Logical", 0, 0, 0);
 
   G4SubtractionSolid* sub9 = new G4SubtractionSolid("sub9"  , DBW1Solid, DBW2Solid, 0, G4ThreeVector(pDBW2Pos_X, pDBW2Pos_Y, pDBW2Pos_Z) );
   G4SubtractionSolid* sub10= new G4SubtractionSolid("sub10" , sub9     , DBW3Solid, 0, G4ThreeVector(pDBW3Pos_X, pDBW3Pos_Y, pDBW3Pos_Z) );
   G4SubtractionSolid* sub11= new G4SubtractionSolid("sub11" , sub10    , DBW4Solid, 0, G4ThreeVector(pDBW4Pos_X, pDBW4Pos_Y, pDBW4Pos_Z) );
 
-  G4LogicalVolume* sub11Logical = new G4LogicalVolume ( sub11, Air, "sub11Logical", 0, 0, 0);
+  G4LogicalVolume* sub11Logical = new G4LogicalVolume ( sub11, siliconsteel, "sub11Logical", 0, 0, 0);
 
   G4LogicalVolume* DLogical = new G4LogicalVolume ( DBI1Solid, Vacuum, "DLogical", 0, 0, 0);
   DLogical->SetVisAttributes(G4VisAttributes::Invisible);
+  DLogical->SetFieldManager(DFieldManager,allLocal);
 
   sub4Logical ->SetVisAttributes(LeadVisAtt);
   sub11Logical->SetVisAttributes(LeadVisAtt);
@@ -260,6 +264,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   new G4PVPlacement(0,G4ThreeVector(pDBI1Pos_X, pDBI1Pos_Y, pDBI1Pos_Z),DLogical,"D",world_log,0,0,0);
 
   new G4PVPlacement(0,G4ThreeVector(0.,0.,0.),sub4Logical,"sub4",DLogical,0,0,0);
+
   
   //new G4PVPlacement(0,G4ThreeVector(pDBW1Pos_X, pDBW1Pos_Y, pDBW1Pos_Z),sub11Logical,"sub11",world_log,0,0,0);
   /*
@@ -369,7 +374,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
 
   // // // // // // // // Virtual Boundary // // // // // // // //
 
-  G4VSolid*        VBSolid   = new G4Tubs("VBSolid",0,pQ1Rout *5., 0.00001 * mm ,0.0,360.0*deg);
+  G4VSolid*        VBSolid   = new G4Tubs("VBSolid",0,pQ1Rout, 0.00001 * mm ,0.0,360.0*deg);
   G4LogicalVolume* Q1ENLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q1ENLogical",0,0,0);
   G4LogicalVolume* Q1EXLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q1EXLogical",0,0,0);
   G4LogicalVolume* Q2ENLogical = new G4LogicalVolume(VBSolid, Vacuum, "Q2ENLogical",0,0,0);
@@ -396,6 +401,8 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   MolPolDetector* Q4ENSD = new MolPolDetector("q4en", 7);
   MolPolDetector* Q4EXSD = new MolPolDetector("q4ex", 8);
 
+  MolPolDetector* DETSD = new MolPolDetector("det", 9);
+
   G4SDManager* SDman = G4SDManager::GetSDMpointer();
 
   SDman->AddNewDetector(Q1ENSD);
@@ -406,6 +413,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   SDman->AddNewDetector(Q3EXSD);
   SDman->AddNewDetector(Q4ENSD);
   SDman->AddNewDetector(Q4EXSD);
+  SDman->AddNewDetector(DETSD );
 
   Q1ENLogical->SetSensitiveDetector(Q1ENSD);
   Q1EXLogical->SetSensitiveDetector(Q1EXSD);
@@ -415,6 +423,7 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   Q3EXLogical->SetSensitiveDetector(Q3EXSD);
   Q4ENLogical->SetSensitiveDetector(Q4ENSD);
   Q4EXLogical->SetSensitiveDetector(Q4EXSD);
+
 
   new G4PVPlacement(0,G4ThreeVector(0,0,pQ1Pos_Z - pQ1HL ),
 		    Q1ENLogical,"virtualBoundaryPhys_q1en",world_log,0,0,0);
@@ -474,10 +483,18 @@ G4VPhysicalVolume* MolPolDetectorConstruction::Construct() {
   G4SubtractionSolid* sub7 = new G4SubtractionSolid("sub7", sub6     , MDBLSolid, pRot9, G4ThreeVector(pMDBLPos_X, pMDBLPos_Y, pMDBLPos_Z) );
   G4SubtractionSolid* sub8 = new G4SubtractionSolid("sub8", sub7     , MDETSolid, pRot7, G4ThreeVector(pMDETPos_X, pMDETPos_Y, pMDETPos_Z) );
 
-  G4LogicalVolume* sub8Logical = new G4LogicalVolume ( sub8, Air, "sub8Logical", 0, 0, 0);
+  G4LogicalVolume* DETLogical = new G4LogicalVolume(DLGBSolid, aluminum, "DETLogical",0,0,0);
+  DETLogical ->SetSensitiveDetector(DETSD );
+
+  G4LogicalVolume* sub8Logical = new G4LogicalVolume ( sub8, siliconsteel, "sub8Logical", 0, 0, 0);
   sub8Logical->SetVisAttributes(AlumVisAtt);
 
   new G4PVPlacement(0,G4ThreeVector(pMDBXPos_X, pMDBXPos_Y, pMDBXPos_Z),sub8Logical,"sub8",world_log,0,0,0);
+
+  new G4PVPlacement(pRot7,G4ThreeVector(pMDBXPos_X + pMDBAPos_X + pMDETPos_X + pDLGBPos_X,
+				    pMDBXPos_Y + pMDBAPos_Y + pMDETPos_Y + pDLGBPos_Y,
+				    pMDBXPos_Z + pMDBAPos_Z + pMDETPos_Z + pDLGBPos_Z),
+		    DETLogical,"virtualBoundaryPhys_det",world_log,0,0,0);
 
 
   /*

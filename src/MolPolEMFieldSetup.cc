@@ -82,7 +82,7 @@ MolPolEMFieldSetup::MolPolEMFieldSetup()
   G4double KAPPA2 =  0.0407379 * tesla / Q2R;
   G4double KAPPA3 =  0.0       * tesla / Q3R;
   G4double KAPPA4 =  0.0445758 * tesla / Q4R;
-  G4double DIPOLE =  0.18      * tesla;
+  G4double DIPOLE = -0.18      * tesla / 1000.;
 
   G4cout << "Magnet settings: " << KAPPA1 << " " << KAPPA2 << " " << KAPPA3 << " " << KAPPA4 << " " << DIPOLE << G4endl;
 

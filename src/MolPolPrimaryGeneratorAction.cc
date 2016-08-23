@@ -39,8 +39,8 @@ MolPolPrimaryGeneratorAction::MolPolPrimaryGeneratorAction()
   fYmin = -5.*mm;
   fYmax =  5.*mm;
 
-  fthetaMin = 0.0*deg;
-  fthetaMax = 10.0*deg;  
+  fthetaMin = 1.0*deg;
+  fthetaMax = 3.0*deg;  
 
   fphiMin = 0.0*deg;
   fphiMax = 360.0*deg;  

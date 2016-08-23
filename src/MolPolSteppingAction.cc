@@ -21,12 +21,14 @@ void MolPolSteppingAction::UserSteppingAction(const G4Step *aStep) {
   //G4cout << "test" << G4endl;
   
   G4String strPhysVolName = aTrack->GetVolume()->GetName();
-  /*
-  std::size_t foundVB = strPhysVolName.find("virtualBoundaryPhys_q1en");
+  
+  std::size_t foundVB = strPhysVolName.find("virtualBoundaryPhys_det");
   if( foundVB != G4String::npos ){
-    G4cout << strPhysVolName << G4endl;
-    G4cout << "q1en!" << G4endl;
+    //G4cout << strPhysVolName << G4endl;
+    //G4cout << "det!" << G4endl;
+    aTrack->SetTrackStatus(fStopAndKill);
   }
+  /*
   foundVB = strPhysVolName.find("virtualBoundaryPhys_q1ex");
   if( foundVB != G4String::npos ){
     G4cout << strPhysVolName << G4endl;
